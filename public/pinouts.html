@@ -1,0 +1,574 @@
+<html>
+<head><title>Cubieboard GPIO - http://linux-sunxi.org/Cubieboard/ExpansionPorts</title>
+<style>
+td { border: 1px solid #aaa; }
+td:hover { background-color: #eee; }
+tr:hover { background-color: #ddd; }
+table.wikitable { width: 48%; }
+</style>
+</head><body>
+
+
+<table class="wikitable" style="float: left;">
+<tbody><tr>
+<th colspan="4"> U14 <small>(Next to SATA connector)</small>
+</th></tr>
+<tr>
+<th colspan="4"> LCD
+</th></tr>
+<tr>
+<td> 1 </td>
+<td class="gpio_num">96</td>
+
+<td> <strong>PD0</strong> <small>(LCDD0/LVDSP0)</small>
+</td>
+<td> 2 </td>
+<td class="gpio_num"></td>
+
+<td> <i>Ground</i>
+</td></tr>
+<tr>
+<td> 3 </td>
+<td class="gpio_num">98</td>
+
+<td> <strong>PD2</strong> <small>(LCDD2/LVDS0P1)</small>
+</td>
+<td> 4 </td>
+<td class="gpio_num">97</td>
+
+<td> <strong>PD1</strong> <small>(LCDD1/LVDS0N0)</small>
+</td></tr>
+<tr>
+<td> 5 </td>
+<td class="gpio_num">100</td>
+
+<td> <strong>PD4</strong> <small>(LCDD4/LNVS0P2)</small>
+</td>
+<td> 6 </td>
+<td class="gpio_num">99</td>
+
+<td> <strong>PD3</strong> <small>(LCDD3/LVDS0N1)</small>
+</td></tr>
+<tr>
+<td> 7 </td>
+<td class="gpio_num">102</td>
+
+<td> <strong>PD6</strong> <small>(LCDD6/LVDS0PC)</small>
+</td>
+<td> 8 </td>
+<td class="gpio_num">101</td>
+
+<td> <strong>PD5</strong> <small>(LCDD5/LVDS0N2)</small>
+</td></tr>
+<tr>
+<td> 9 </td>
+<td class="gpio_num"></td>
+
+<td> <i>Ground</i>
+</td>
+<td> 10 </td>
+<td class="gpio_num">103</td>
+
+<td> <strong>PD7</strong> <small>(LCDD7/LVDS0NC)</small>
+</td></tr>
+<tr>
+<td> 11 </td>
+<td class="gpio_num">105</td>
+
+<td> <strong>PD9</strong> <small>(LCDD9/LVDS0N3)</small>
+</td>
+<td> 12 </td>
+<td class="gpio_num">104</td>
+
+<td> <strong>PD8</strong> <small>(LCDD8/LVDS0P3)</small>
+</td></tr>
+<tr>
+<td> 13 </td>
+<td class="gpio_num">107</td>
+
+<td> <strong>PD11</strong> <small>(LCDD11/LVDS1N0)</small>
+</td>
+<td> 14 </td>
+<td class="gpio_num">106</td>
+
+<td> <strong>PD10</strong> <small>(LCDD10/LVDS1P0)</small>
+</td></tr>
+<tr>
+<td> 15 </td>
+<td class="gpio_num">109</td>
+
+<td> <strong>PD13</strong> <small>(LCDD13/LVDS1N1)</small>
+</td>
+<td> 16 </td>
+<td class="gpio_num">108</td>
+
+<td> <strong>PD12</strong> <small>(LCDD12/LVDS1P1)</small>
+</td></tr>
+<tr>
+<td> 17 </td>
+<td class="gpio_num">111</td>
+
+<td> <strong>PD15</strong> <small>(LCDD15/LVDS1N2)</small>
+</td>
+<td> 18 </td>
+<td class="gpio_num">110</td>
+
+<td> <strong>PD14</strong> <small>(LCDD14/LVDS1P2)</small>
+</td></tr>
+<tr>
+<td> 19 </td>
+<td class="gpio_num">112</td>
+
+<td> <strong>PD16</strong> <small>(LCDD16/LVDS1PC)</small>
+</td>
+<td> 20 </td>
+<td class="gpio_num"></td>
+
+<td> <i>Ground</i>
+</td></tr>
+<tr>
+<td> 21 </td>
+<td class="gpio_num">114</td>
+
+<td> <strong>PD18</strong> <small>(LCDD18/LVDS1P3)</small>
+</td>
+<td> 22 </td>
+<td class="gpio_num">113</td>
+
+<td> <strong>PD17</strong> <small>(LCDD17/LVDS1NC)</small>
+</td></tr>
+<tr>
+<td> 23 </td>
+<td class="gpio_num">116</td>
+
+<td> <strong>PD20</strong> <small>(LCDD20)</small>
+</td>
+<td> 24 </td>
+<td class="gpio_num">115</td>
+
+<td> <strong>PD19</strong> <small>(LCDD19/LVDS1N3)</small>
+</td></tr>
+<tr>
+<td> 25 </td>
+<td class="gpio_num">118</td>
+
+<td> <strong>PD22</strong> <small>(LCDD22)</small>
+</td>
+<td> 26 </td>
+<td class="gpio_num">117</td>
+
+<td> <strong>PD21</strong> <small>(LCDD21)</small>
+</td></tr>
+<tr>
+<td> 27 </td>
+<td class="gpio_num">123</td>
+
+<td> <strong>PD27</strong> <small>(LCDVSYNC)-VGA-VSYNC</small>
+</td>
+<td> 28 </td>
+<td class="gpio_num">119</td>
+
+<td> <strong>PD23</strong> <small>(LCDD23)</small>
+</td></tr>
+<tr>
+<td> 29 </td>
+<td class="gpio_num">120</td>
+
+<td> <strong>PD24</strong> <small>(LCDCLK)</small>
+</td>
+<td> 30 </td>
+<td class="gpio_num">122</td>
+
+<td> <strong>PD26</strong> <small>(LCDHSYNC)-VGA-HSYNC</small>
+</td></tr>
+<tr>
+<td> 31 </td>
+<td class="gpio_num">34</td>
+
+<td> <strong>PB2</strong> <small>(PWM0)</small>
+</td>
+<td> 32 </td>
+<td class="gpio_num">121</td>
+
+<td> <strong>PD25</strong> <small>(LCDDE)</small>
+</td></tr>
+<tr>
+<td> 33 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>YP_TP</strong> <small>(TP-Y1)</small>
+</td>
+<td> 34 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>XP_TP</strong> <small>(TP-X1)</small>
+</td></tr>
+<tr>
+<td> 35 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>YN_TP</strong> <small>(TP-Y2)</small>
+</td>
+<td> 36 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>XN_TP</strong> <small>(TP-X2)</small>
+</td></tr>
+<tr>
+<td> 37 </td>
+<td class="gpio_num">231</td>
+
+<td> <strong>PH7</strong> <small>(LCD0-BL-EN/LCD-PIO0/UART5-RX/EINT7)</small>
+</td>
+<td> 38 </td>
+<td class="gpio_num"></td>
+
+<td> <i>Ground</i>
+</td></tr>
+<tr>
+<td> 39 </td>
+<td class="gpio_num">43</td>
+
+<td> <strong>PB11</strong> <small>(LCD0-SDA/LCD-PIO2)</small>
+</td>
+<td> 40 </td>
+<td class="gpio_num">42</td>
+
+<td> <strong>PB10</strong> <small>(LCD0-SCK/LCD-PIO1)</small>
+</td></tr>
+<tr>
+<td> 41 </td>
+<td class="gpio_num"></td>
+
+<td> SPDIF
+</td>
+<td> 42 </td>
+<td class="gpio_num"></td>
+
+<td> <i>Ground</i>
+</td></tr>
+<tr>
+<td> 43 </td>
+<td class="gpio_num"></td>
+
+<td> VCC-5V
+</td>
+<td> 44 </td>
+<td class="gpio_num"></td>
+
+<td> 3.3V <small>(<i>nc</i> in 2012-08-08)</small>
+</td></tr>
+<tr>
+<th colspan="4"> SPI0
+</th></tr>
+<tr>
+<td> 45 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PI10</strong> <small>(SPI0-CS/UART5-TX/EINT22)</small>
+</td>
+<td> 46 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PI12</strong> <small>(SPI0-MOSI/UART6-TX/EINT24)</small>
+</td></tr>
+<tr>
+<td> 47 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PI11</strong> <small>(SPI0-CLK/UART5-RX/EINT23)</small>
+</td>
+<td> 48 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PI13</strong> <small>(SPI0-MISO/UART6-RX/EINT25)</small>
+</td></tr></tbody></table>
+
+
+<table class="wikitable" style="float: right;">
+<tbody><tr>
+<th colspan="4"> U15 <small>(Between Ethernet port and USB ports)</small>
+</th></tr>
+<tr>
+<th colspan="4"> CSI1/TS
+</th></tr>
+<tr>
+<td> 1 </td>
+<td class="gpio_num"></td>
+
+<td> VCC-5V
+</td>
+<td> 2 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PH15</strong> <small>(CSI1-PWR/EINT15)</small>
+</td></tr>
+<tr>
+<td> 3 </td>
+<td class="gpio_num"></td>
+
+<td> CSI1-IO-2V8
+</td>
+<td> 4 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PH14</strong> <small>(CSI1-RST#/EINT14)</small>
+</td></tr>
+<tr>
+<td> 5 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PG0</strong> <small>(CSI1-PCLK/SDC1-CMD)</small>
+</td>
+<td> 6 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PB18</strong> <small>(TWI1-SCK)</small>
+</td></tr>
+<tr>
+<td> 7 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PB19</strong> <small>(TWI1-SDA)</small>
+</td>
+<td> 8 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PG3</strong> <small>(CSI1-VSYNC/SDC1-D1)</small>
+</td></tr>
+<tr>
+<td> 9 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PG2</strong> <small>(CSI1-HSYNC/SDC1-D0)</small>
+</td>
+<td> 10 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PG1</strong> <small>(CSI1-MCLK/SDC1-CLK)</small>
+</td></tr>
+<tr>
+<td> 11 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PG4</strong> <small>(CSI1-D0/SDC1-D2)</small>
+</td>
+<td> 12 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PG5</strong> <small>(CSI1-D1/SDC1-D3)</small>
+</td></tr>
+<tr>
+<td> 13 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PG6</strong> <small>(CSI1-D2/UART3-TX)</small>
+</td>
+<td> 14 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PG7</strong> <small>(CSI1-D3/UART3-RX)</small>
+</td></tr>
+<tr>
+<td> 15 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PG8</strong> <small>(CSI1-D4/UART3-RTS)</small>
+</td>
+<td> 16 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PG9</strong> <small>(CSI1-D5/UART3-CTS)</small>
+</td></tr>
+<tr>
+<td> 17 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PG10</strong> <small>(CSI1-D6/UART4-TX)</small>
+</td>
+<td> 18 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PG11</strong> <small>(CSI1-D7/UART4-RX)</small>
+</td></tr>
+<tr>
+<td> 19 </td>
+<td class="gpio_num"></td>
+
+<td> <i>Ground</i>
+</td>
+<td> 20 </td>
+<td class="gpio_num"></td>
+
+<td> <i>Ground</i>
+</td></tr>
+<tr>
+<th colspan="2"> Analog
+</th>
+<th colspan="2"> SDIO3
+</th></tr>
+<tr>
+<td> 21 </td>
+<td class="gpio_num"></td>
+
+<td> FMINL
+</td>
+<td> 22 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PI4</strong> <small>(SDC3-CMD)</small>
+</td></tr>
+<tr>
+<td> 23 </td>
+<td class="gpio_num"></td>
+
+<td> FMINR
+</td>
+<td> 24 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PI5</strong> <small>(SDC3-CLK)</small>
+</td></tr>
+<tr>
+<td> 25 </td>
+<td class="gpio_num"></td>
+
+<td> <i>Ground</i>
+</td>
+<td> 26 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PI6</strong> <small>(SDC3-D0)</small>
+</td></tr>
+<tr>
+<td> 27 </td>
+<td class="gpio_num"></td>
+
+<td> VGA-R
+</td>
+<td> 28 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PI7</strong> <small>(SDC3-D1)</small>
+</td></tr>
+<tr>
+<td> 29 </td>
+<td class="gpio_num"></td>
+
+<td> VGA-G
+</td>
+<td> 30 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PI8</strong> <small>(SDC3-D2)</small>
+</td></tr>
+<tr>
+<td> 31 </td>
+<td class="gpio_num"></td>
+
+<td> VGA-B
+</td>
+<td> 32 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PI9</strong> <small>(SDC3-D3)</small>
+</td></tr>
+<tr>
+<td colspan="2">
+</td>
+<th colspan="2"> CSI0/TS
+</th></tr>
+<tr>
+<td> 33 </td>
+<td class="gpio_num"></td>
+
+<td> LCD1-VSYNC
+</td>
+<td> 34 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PE4</strong> <small>(CSI0-D0)</small>
+</td></tr>
+<tr>
+<td> 35 </td>
+<td class="gpio_num"></td>
+
+<td> LCD1-HSYNC
+</td>
+<td> 36 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PE5</strong> <small>(CSI0-D1)</small>
+</td></tr>
+<tr>
+<td> 37 </td>
+<td class="gpio_num"></td>
+
+<td> <i>Ground</i>
+</td>
+<td> 38 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PE6</strong> <small>(CSI0-D2)</small>
+</td></tr>
+<tr>
+<td> 39 </td>
+<td class="gpio_num"></td>
+
+<td> AVCC
+</td>
+<td> 40 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PE7</strong> <small>(CSI0-D3)</small>
+</td></tr>
+<tr>
+<td> 41 </td>
+<td class="gpio_num"></td>
+
+<td> LRADC0
+</td>
+<td> 42 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PE8</strong> <small>(CSI0-D4)</small>
+</td></tr>
+<tr>
+<td> 43 </td>
+<td class="gpio_num"></td>
+
+<td> CVBS
+</td>
+<td> 44 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PE9</strong> <small>(CSI0-D5)</small>
+</td></tr>
+<tr>
+<td> 45 </td>
+<td class="gpio_num"></td>
+
+<td> HPL
+</td>
+<td> 46 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PE10</strong> <small>(CSI0-D6)</small>
+</td></tr>
+<tr>
+<td> 47 </td>
+<td class="gpio_num"></td>
+
+<td> HPR
+</td>
+<td> 48 </td>
+<td class="gpio_num"></td>
+
+<td> <strong>PE11</strong> <small>(CSI0-D7)</small>
+</td></tr></tbody></table>
+
+<div style="clear:both;"></div>
+<p>Notes:
+<small>GPIO numbering scheme is found through formula given at https://linux-sunxi.org/GPIO</small>
+</p>
+</body></html>
