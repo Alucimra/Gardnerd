@@ -1,0 +1,15 @@
+[Unit]
+Description=Send our local ip to the ipool
+ConditionFileIsExecutable=/usr/local/sbin/notify-ip
+Wants=network-online.target
+After=network-online.target systemd-resolved.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/notify-ip
+Environment="TARGET_URL=http://www.example.com/your/page"
+RemainAfterExit=yes
+
+[Install]
+WantedBy=graphical.target
+
