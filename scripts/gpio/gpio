@@ -1,0 +1,274 @@
+#!/bin/bash
+
+showhelp() {
+cat <<HELP_MESSAGE_TEXT
+GPIO - a utility application for Linux's /sys/class/gpio interface
+
+Usage:
+  gpio GPIO_NUM [ACTION] [ARG1 [ARG2] ...]
+  
+  Warning: GPIO_NUM is the kernel's gpio numbering which (most likely) does not
+  directly coincide with the pin headers on your microcontroller.
+  For example, on the Raspberry Pi pin 26 is gpio 7. The GPIO_NUM is 7
+
+Example:
+
+  gpio help
+  gpio 7 reserve "For switching on the LED"
+  gpio 7 export
+  gpio 7 high # sets direction as "out" and value as "1"
+
+
+Actions:
+
+  help
+    Show the help message (this one that you're reading). Default if you do not
+    give a gpio (which is invalid usage; port number is required).
+
+  status
+    Reads the reserve if it exists, direction and value. This is the default if
+    you give a gpio but do not give an action.
+
+  reserve DESCRIPTION
+    Reserves the gpio for some specific usage with a description. Does not
+    directly limit the gpio from being exported, but status can be checked with
+    "status" or "reserved?" actions.
+  
+  reserved?
+    Checks if the gpio is reserved. Returns 1 if there is a reserve or 0 if not
+
+  reservation
+    Outputs the description text given when reserving
+
+  release
+    Removes the reserve
+
+  export [WAIT_SECONDS]
+    Exports the gpio (makes it usable).
+    
+    WAIT_SECONDS is the number of seconds to wait for the gpio to fully export
+    The script will block up to that many of seconds for the gpio to open, but
+    if the gpio doesn't open after that many seconds, the script will still exit
+    Default is 0 which means return right after export.
+
+  unexport [WAIT_SECONDS]
+    Unexports the gpio (closes it)
+    
+    WAIT_SECONDS is the number of seconds to wait for the gpio to full unexport
+    The script will block up to that many seconds for the gpio to open, but if
+    the gpio doesn't open after that many seconds, the script will still exit.
+    Default is 0 which means return right after unexport.
+
+  allocate DIRECTION DESCRIPTION
+    Shortcut for reserve + export + direction
+    Allocates the GPIO with a reserve and direction.
+  
+  direction DIRECTION
+    Set direction to DIRECTION. Valid values are defined by your gpio module
+    On the mainline kernel's version valid values are: in out high low
+
+  read (alias: value)
+    Reads the value of the gpio
+  
+  write VALUE (alias: set)
+    Writes the value to the gpio. Only works if direction is output.
+  
+  in
+    Set gpio direction to input. Shortcut for "direction in"
+  
+  high
+    Set gpio direction to output with value 1. Shortcut for "direction high"
+  
+  low
+    Set gpio direction to output with value 0. Shortcut for "direction low"
+  
+  out
+    Set gpio direction to output. Shortcut for "direction out"
+    
+    It is recommended to use high/low instead so you know exactly what the
+    initial value for the output will be. Default is undefined (maybe random?)
+  
+  up
+    Set the gpio value to 1. Shortcut for "write 1"
+  
+  down
+    Set the gpio value to 0. Shortcut for "write 0"
+
+Environment variables:
+
+  GPIO_DIRECTORY=/tmp/gpio
+    By default, the commands write necessary files and locks to /tmp/gpio You'll
+    find files like /tmp/gpio/11.reserve This directory can be changed by using
+    the GPIO_DIRECTORY environment variable to the new target directory.
+    
+  GPIO_SYSCLASS_PATH=/sys/class/gpio
+    Path to the gpio sys directory with export unexport and gpio port folders
+    Generally you shouldn't change this, it's only useful for testing
+
+TODO:
+
+  import deport relieve for enforcing the existence of reserves
+  up down mid as helpers for exporting gpio and setting direction
+
+
+Copyright and Licensing
+
+  Copyright on December 25, 2015 by User Hello LLC
+  
+  Licensed under MIT License  
+
+HELP_MESSAGE_TEXT
+
+}
+
+# ------- IMPORTANT CODE STARTS HERE ------- #
+
+[[ "$GPIO_DIRECTORY" ]] || GPIO_DIRECTORY="/tmp/gpio"
+[[ "$GPIO_SYSCLASS_PATH" ]] || GPIO_SYSCLASS_PATH="/sys/class/gpio"
+
+
+
+if [[ $# -lt 1 ]]
+then
+  showhelp
+  exit 1
+else
+  if [[ "$1" == "help" ]]
+  then
+    showhelp
+    exit 0
+  fi
+fi
+
+# At this point we're sure we have the first argument (the gpio number)
+
+
+# Some modified kernel gpio modules change the pathname to some weird stuff
+# You may need to add some sort of lookup table for this if that's the case.
+# TODO: Decide to support those weird ones too or no?
+GPIO_PATH="$GPIO_SYSCLASS_PATH/gpio$1"
+GPIO_NUM=$1
+GPIO_RESERVE_PATH="$GPIO_DIRECTORY/$GPIO_NUM.reserve"
+
+mkdir -p "$GPIO_RESERVE_PATH"
+
+error(){
+  echo "$1" >&2
+}
+
+
+status(){
+  if [[ -e "$RESERVE_PATH" ]]
+  then
+    echo "Reservation: Reserved"
+    cat $RESERVE_PATH
+  else
+    echo "Reservation: NONE"
+  fi
+
+  if [[ -e "$GPIO_PATH" ]]
+  then
+    echo "Exported: yes"
+    echo "Direction: `cat $GPIO_PATH/direction`"
+    echo "Value: `cat $GPIO_PATH/value`"
+  else
+    echo "Exported: no"
+    echo "Direction: "
+    echo "Value: "
+  fi
+}
+
+reserve(){
+  DESC=$1
+  if [[ -e "$GPIO_RESERVE_PATH" ]]
+  then
+    error "Reserve already exists."
+    error $(cat $GPIO_RESERVE_PATH)
+    exit 2
+  else
+    echo "$DESC" > "$GPIO_RESERVE_PATH"
+  fi
+}
+
+
+
+if [[ $# -lt 2 ]]
+then
+  status
+  exit 0
+fi
+
+case $2 in
+	help)
+		showhelp
+		;;
+	
+	status)
+	  status
+	  ;;
+	
+	reserve)
+	  reserve $3
+	  ;;
+	
+	reserved?)
+	  reserved?
+	  ;;
+	
+	reservation)
+	  reservation
+	  ;;
+	
+	release)
+	  release
+	  ;;
+	
+	export)
+	  export_gpio $3
+	  ;;
+	
+	unexport)
+	  unexport_gpio $3
+	  ;;
+	
+	allocate)
+	  allocate $3 $4
+	  ;;
+	
+	direction)
+	  ;;
+	
+	read,value)
+	  value
+	  ;;
+	
+	write)
+	  write_gpio
+	  ;;
+	
+	in)
+	  direction "in"
+	  ;;
+	
+	high)
+	  direction "high"
+	  ;;
+	
+	low)
+	  direction "low"
+	  ;;
+	
+	out)
+	  direction "out"
+	  ;;
+	
+	up)
+	  write_gpio "1"
+	  ;;
+	
+	down)
+	  write_gpio "0"
+	  ;;
+	
+		
+esac

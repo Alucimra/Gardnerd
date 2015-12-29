@@ -1,0 +1,8 @@
+#!/bin/bash
+
+GPIO_DIRECTORY=$TEST_DIR/tmp/reserves
+GPIO_SYSCLASS_PATH=$TEST_DIR/tmp/sys_gpio
+
+rm -rf $TEST_DIR/tmp/*
+
+
