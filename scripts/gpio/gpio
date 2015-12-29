@@ -98,6 +98,7 @@ Actions:
     Shows the current environment variables pertaining to this app's usage.
     See Environment Variables section for more information.
 
+
 Environment variables:
 
   GPIO_DIRECTORY=/tmp/gpio
@@ -108,6 +109,10 @@ Environment variables:
   GPIO_SYSCLASS_PATH=/sys/class/gpio
     Path to the gpio sys directory with export unexport and gpio port folders
     Generally you shouldn't change this, it's only useful for testing
+
+Notes & Misc & Etc
+
+  Errors are written to STDOUT. Usually when there is an error, it means failure
 
 TODO:
 
@@ -206,17 +211,49 @@ status(){
 
 reserve(){
   DESC="$1"
+  
   if [[ -e "$GPIO_RESERVE_PATH" ]]
   then
     error "Reserve already exists."
-    error $(cat $GPIO_RESERVE_PATH)
+    cat "$GPIO_RESERVE_PATH"
     return 2
   else
     echo "$DESC" > "$GPIO_RESERVE_PATH"
+    cat "$GPIO_RESERVE_PATH"
     return 0
   fi
 }
 
+check_reserved(){
+  if [[ -e "$GPIO_RESERVE_PATH" ]]; then
+    echo 1
+    return 1
+  else
+    echo 0
+    return 0
+  fi
+}
+
+reservation(){
+  if [[ -e "$GPIO_RESERVE_PATH" ]]; then
+    cat "$GPIO_RESERVE_PATH"
+    return 0
+  else
+    error "Not Reserved"
+    return 1
+  fi
+}
+
+release(){
+  if [[ -e "$GPIO_RESERVE_PATH" ]]; then
+    cat "$GPIO_RESERVE_PATH"
+    rm "$GPIO_RESERVE_PATH"
+    return 0
+  else
+    error "Not Reserved"
+    return 1
+  fi
+}
 
 
 if [[ $# -lt 2 ]]
@@ -235,11 +272,11 @@ case $2 in
 	  ;;
 	
 	reserve)
-	  reserve $3
+	  reserve "$3"
 	  ;;
 	
 	reserved?)
-	  reserved?
+	  check_reserved
 	  ;;
 	
 	reservation)
