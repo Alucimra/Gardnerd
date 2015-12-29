@@ -397,88 +397,88 @@ then
 fi
 
 case $2 in
-	help)
-		showhelp
-		;;
-	
-	status)
-	  status
-	  ;;
-	
-	reserve)
-	  reserve "$3"
-	  ;;
-	
-	reserved?)
-	  check_reserved
-	  ;;
-	
-	reservation)
-	  reservation
-	  ;;
-	
-	release)
-	  release
-	  ;;
-	
-	export)
-	  export_gpio "$3"
-	  ;;
-	
-	unexport)
-	  unexport_gpio "$3"
-	  ;;
-	
-	allocate)
-	  if [[ $# -eq 4 ]]; then
-	    allocate "$3" 0 "$4"
-	  else
-	    allocate "$3" "$4" "$5"
-	  fi
-	  ;;
-	
-	direction)
-	  direction "$3"
-	  ;;
-	
-	direction?)
-	  get_direction
-	  ;;
-	
-	read|value)
-	  read_gpio
-	  ;;
-	
-	write)
-	  write_gpio "$3"
-	  ;;
-	
-	in)
-	  direction "in"
-	  ;;
-	
-	high)
-	  direction "high"
-	  ;;
-	
-	low)
-	  direction "low"
-	  ;;
-	
-	out)
-	  direction "out"
-	  ;;
-	
-	up)
-	  write_gpio "1"
-	  ;;
-	
-	down)
-	  write_gpio "0"
-	  ;;
-	
-	environment)
-	  showenvironment
-	  ;;
+  help)
+    showhelp
+    ;;
+
+  status)
+    status
+    ;;
+
+  reserve)
+    reserve "$3"
+    ;;
+
+  reserved?)
+    check_reserved
+    ;;
+
+  reservation)
+    reservation
+    ;;
+
+  release)
+    release
+    ;;
+
+  export)
+    export_gpio "$3"
+    ;;
+
+  unexport)
+    unexport_gpio "$3"
+    ;;
+
+  allocate)
+    if [[ $# -eq 4 ]]; then
+      allocate "$3" 0 "$4"
+    else
+      allocate "$3" "$4" "$5"
+    fi
+    ;;
+
+  direction)
+    direction "$3"
+    ;;
+
+  direction?)
+    get_direction
+    ;;
+
+  read|value)
+    read_gpio
+    ;;
+
+  write)
+    write_gpio "$3"
+    ;;
+
+  in)
+    direction "in"
+    ;;
+
+  high)
+    direction "high"
+    ;;
+
+  low)
+    direction "low"
+    ;;
+
+  out)
+    direction "out"
+    ;;
+
+  up)
+    write_gpio "1"
+    ;;
+
+  down)
+    write_gpio "0"
+    ;;
+
+  environment)
+    showenvironment
+    ;;
 		
 esac
