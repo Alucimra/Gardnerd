@@ -1,7 +1,7 @@
 #!/bin/bash
 
-HELPMSG=`$SCRIPT_PATH help`
-HELP1MSG=`$SCRIPT_PATH`
+HELPMSG=$(testrun)
+HELP1MSG=$(testrun help)
 
 [[ "$HELPMSG" == "$HELP1MSG" ]]
 testing "help is default" $?

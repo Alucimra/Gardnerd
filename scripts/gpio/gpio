@@ -93,6 +93,10 @@ Actions:
   
   down
     Set the gpio value to 0. Shortcut for "write 0"
+    
+  environment
+    Shows the current environment variables pertaining to this app's usage.
+    See Environment Variables section for more information.
 
 Environment variables:
 
@@ -119,23 +123,42 @@ Copyright and Licensing
 
 HELP_MESSAGE_TEXT
 
+  return 0
 }
 
 # ------- IMPORTANT CODE STARTS HERE ------- #
 
+
 [[ "$GPIO_DIRECTORY" ]] || GPIO_DIRECTORY="/tmp/gpio"
 [[ "$GPIO_SYSCLASS_PATH" ]] || GPIO_SYSCLASS_PATH="/sys/class/gpio"
 
-
+showenvironment(){
+  echo
+  echo "GPIO_DIRECTORY='$GPIO_DIRECTORY'"
+  echo "GPIO_SYSCLASS_PATH='$GPIO_SYSCLASS_PATH'"
+  
+  if [[ "$GPIO_NUM" ]]; then
+    echo
+    echo "GPIO_NUM='$GPIO_NUM'"
+    echo "GPIO_PATH='$GPIO_PATH'"
+    echo "GPIO_RESERVE_PATH='$GPIO_RESERVE_PATH'"
+  fi
+  
+  echo
+}
 
 if [[ $# -lt 1 ]]
 then
   showhelp
   exit 1
 else
-  if [[ "$1" == "help" ]]
-  then
+  if [[ "$1" == "help" ]]; then
     showhelp
+    exit 0
+  fi
+  
+  if [[ "$1" == "environment" ]]; then
+    showenvironment
     exit 0
   fi
 fi
@@ -150,7 +173,8 @@ GPIO_PATH="$GPIO_SYSCLASS_PATH/gpio$1"
 GPIO_NUM=$1
 GPIO_RESERVE_PATH="$GPIO_DIRECTORY/$GPIO_NUM.reserve"
 
-mkdir -p "$GPIO_RESERVE_PATH"
+
+mkdir -p $(dirname "$GPIO_RESERVE_PATH")
 
 error(){
   echo "$1" >&2
@@ -158,10 +182,12 @@ error(){
 
 
 status(){
-  if [[ -e "$RESERVE_PATH" ]]
+  if [[ -e "$GPIO_RESERVE_PATH" ]]
   then
     echo "Reservation: Reserved"
-    cat $RESERVE_PATH
+    echo "-- begin reservation description --"
+    cat "$GPIO_RESERVE_PATH"
+    echo "--  end  reservation description --"
   else
     echo "Reservation: NONE"
   fi
@@ -179,14 +205,15 @@ status(){
 }
 
 reserve(){
-  DESC=$1
+  DESC="$1"
   if [[ -e "$GPIO_RESERVE_PATH" ]]
   then
     error "Reserve already exists."
     error $(cat $GPIO_RESERVE_PATH)
-    exit 2
+    return 2
   else
     echo "$DESC" > "$GPIO_RESERVE_PATH"
+    return 0
   fi
 }
 
@@ -270,5 +297,8 @@ case $2 in
 	  write_gpio "0"
 	  ;;
 	
+	environment)
+	  showenvironment
+	  ;;
 		
 esac
