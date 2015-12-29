@@ -15,7 +15,7 @@ Example:
 
   gpio help
   gpio 7 reserve "For switching on the LED"
-  gpio 7 export
+  gpio 7 export 5
   gpio 7 high # sets direction as "out" and value as "1"
 
 
@@ -59,19 +59,29 @@ Actions:
     the gpio doesn't open after that many seconds, the script will still exit.
     Default is 0 which means return right after unexport.
 
-  allocate DIRECTION DESCRIPTION
+  allocate DIRECTION [WAIT_SECONDS] DESCRIPTION
     Shortcut for reserve + export + direction
     Allocates the GPIO with a reserve and direction.
   
   direction DIRECTION
     Set direction to DIRECTION. Valid values are defined by your gpio module
     On the mainline kernel's version valid values are: in out high low
+    
+    It returns the new direction, but not necessarily the same direction you set
+    eg: it'll only say "out" even if you set it "high" or "low"
+    
+    Warning: Results are undefined for invalid values
+  
+  direction?
+    Get the direction of the gpio. Generally only "in" or "out"
 
   read (alias: value)
     Reads the value of the gpio
   
   write VALUE (alias: set)
-    Writes the value to the gpio. Only works if direction is output.
+    Writes the value to the gpio. Only works if the gpio is set to output
+    
+    Warning: Results are undefined if gpio is set as input
   
   in
     Set gpio direction to input. Shortcut for "direction in"
@@ -113,6 +123,9 @@ Environment variables:
 Notes & Misc & Etc
 
   Errors are written to STDOUT. Usually when there is an error, it means failure
+  
+  Required apps in userspace: bash ls echo cat rm expr
+  All of which should be part of the default linux installation.
 
 TODO:
 
@@ -122,7 +135,7 @@ TODO:
 
 Copyright and Licensing
 
-  Copyright on December 25, 2015 by User Hello LLC
+  Copyright in 2015 by User Hello LLC
   
   Licensed under MIT License  
 
@@ -255,6 +268,127 @@ release(){
   fi
 }
 
+export_gpio(){
+  local WAIT=$(($1 + 0))
+  # The multiplication is escaped because * is a special character (file glob)
+  local TOTAL_TICKS=$(expr $WAIT \* 4)
+  local WAIT_TICKS=0
+  
+  if [[ ! -e "$GPIO_SYSCLASS_PATH/export" ]]; then
+    error "GPIO class system folder does not exist"
+    return 27
+  fi
+  
+  if [[ -e "$GPIO_PATH" ]]; then
+    error "Already Exported"
+    return 25
+  else
+    echo "$GPIO_NUM" > "$GPIO_SYSCLASS_PATH/export"
+    local RET=$?
+    
+    # The WAIT is a little weird since bash doesn't support floating math
+    # We divide a second into 4 equal parts (250ms) and then sleep, adding a
+    # tick every time we wake until we reach WAIT_TICKS=WAIT*4 or it has exported
+    while [ $WAIT_TICKS -lt $TOTAL_TICKS ]; do
+      [[ ! -e $GPIO_PATH ]] && sleep 0.250
+      let WAIT_TICKS+=1
+    done
+    
+    return $RET
+  fi
+}
+
+
+unexport_gpio(){
+  local WAIT=$(($1 + 0))
+  local TOTAL_TICKS=$(expr $WAIT \* 4)
+  local WAIT_TICKS=0
+  
+  if [[ ! -e "$GPIO_SYSCLASS_PATH/unexport" ]]; then
+    error "GPIO class system folder does not exist"
+    return 27
+  fi
+  
+  if [[ ! -e "$GPIO_PATH" ]]; then
+    error "Not Exported"
+    return 30
+  else
+    echo "$GPIO_NUM" > "$GPIO_SYSCLASS_PATH/unexport"
+    local RET=$?
+    
+    # See export_gpio() for note on WAIT math
+    while [ $WAIT_TICKS -lt $TOTAL_TICKS ]; do
+      [[ -e $GPIO_PATH ]] && sleep 0.250
+      let WAIT_TICKS+=1
+    done
+    
+    return $RET
+  fi
+}
+
+allocate(){
+  local DIRECTION="$1"
+  local WAIT=$(($2 + 0))
+  local DESCRIPTION="$3"
+  
+  if [[ -e "$GPIO_PATH" ]]; then
+    error "Already Exported"
+    return 25
+  else
+    reserve "$DESCRIPTION" &&
+    export_gpio "$WAIT" &&
+    direction "$DIRECTION" &&
+    status
+  fi
+}
+
+direction(){
+  local NEWDIRECTION="$1"
+  
+  if [[ ! $NEWDIRECTION ]]; then
+    error "No direction given"
+    return 24
+  fi
+  
+  if [[ -e "$GPIO_PATH/direction" ]]; then
+    echo "$NEWDIRECTION" > "$GPIO_PATH/direction"
+    cat "$GPIO_PATH/direction"
+  else
+    error "Not Exported"
+    return 30
+  fi
+}
+
+get_direction(){
+  if [[ -e "$GPIO_PATH/direction" ]]; then
+    cat "$GPIO_PATH/direction"
+  else
+    error "Not Exported"
+    return 20
+  fi
+}
+
+read_gpio(){
+  if [[ -e "$GPIO_PATH/value" ]]; then
+    cat "$GPIO_PATH/value"
+  else
+    error "Not Exported"
+    return 30
+  fi
+}
+
+write_gpio(){
+  local NEWVAL="$1"
+  
+  if [[ -e "$GPIO_PATH/value" ]]; then
+    echo "$NEWVAL" > "$GPIO_PATH/value"
+    cat "$GPIO_PATH/value"
+  else
+    error "Not Exported"
+    return 30
+  fi
+}
+
 
 if [[ $# -lt 2 ]]
 then
@@ -288,26 +422,35 @@ case $2 in
 	  ;;
 	
 	export)
-	  export_gpio $3
+	  export_gpio "$3"
 	  ;;
 	
 	unexport)
-	  unexport_gpio $3
+	  unexport_gpio "$3"
 	  ;;
 	
 	allocate)
-	  allocate $3 $4
+	  if [[ $# -eq 4 ]]; then
+	    allocate "$3" 0 "$4"
+	  else
+	    allocate "$3" "$4" "$5"
+	  fi
 	  ;;
 	
 	direction)
+	  direction "$3"
 	  ;;
 	
-	read,value)
-	  value
+	direction?)
+	  get_direction
+	  ;;
+	
+	read|value)
+	  read_gpio
 	  ;;
 	
 	write)
-	  write_gpio
+	  write_gpio "$3"
 	  ;;
 	
 	in)
